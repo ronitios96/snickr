@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · Snickr{% endblock %}
+{% block content %}
+<section class="error-state">
+  <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
+  <a class="button-link" href="{{ url_for('dashboard') if g.user else url_for('auth') }}">Go back</a>
+</section>
+{% endblock %}
+

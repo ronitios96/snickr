@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Snickr{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-copy">
+    <h1>Team conversations, tucked into workspaces.</h1>
+    <p>Use the seeded accounts or register a new user, then create channels, invite members, post messages, and search accessible content.</p>
+    <div class="demo-list">
+      <span>Demo password</span>
+      <strong>password123</strong>
+    </div>
+  </div>
+  <div class="auth-panel">
+    <div class="tabs" role="tablist">
+      <button class="tab active" type="button" onclick="document.body.classList.remove('show-register')">Log in</button>
+      <button class="tab" type="button" onclick="document.body.classList.add('show-register')">Register</button>
+    </div>
+
+    <form class="auth-form login-form" method="post">
+      <input type="hidden" name="mode" value="login">
+      <label>Username or email
+        <input name="identifier" autocomplete="username" placeholder="aarav" required>
+      </label>
+      <label>Password
+        <input name="password" type="password" autocomplete="current-password" placeholder="password123" required>
+      </label>
+      <button class="primary" type="submit">Log in</button>
+    </form>
+
+    <form class="auth-form register-form" method="post">
+      <input type="hidden" name="mode" value="register">
+      <label>Email
+        <input name="email" type="email" autocomplete="email" required>
+      </label>
+      <label>Username
+        <input name="username" autocomplete="username" required>
+      </label>
+      <label>Nickname
+        <input name="nickname" autocomplete="nickname">
+      </label>
+      <label>Password
+        <input name="password" type="password" autocomplete="new-password" required>
+      </label>
+      <button class="primary" type="submit">Create account</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

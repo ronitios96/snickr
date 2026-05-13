@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Search · Snickr{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Search</h1>
+    <p>Results only include messages from workspaces and channels you can access.</p>
+  </div>
+</section>
+
+<form class="search-page-form" action="{{ url_for('search') }}">
+  <input name="q" value="{{ q }}" placeholder="perpendicular">
+  <button class="primary" type="submit">Search</button>
+</form>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Results</h2>
+    {% if q %}<span>{{ results|length }}</span>{% endif %}
+  </div>
+  <div class="stack">
+    {% for result in results %}
+      <a class="result-row" href="{{ url_for('channel', channel_id=result.channel_id) }}">
+        <div>
+          <strong>{{ result.workspace_name }} / #{{ result.channel_name }}</strong>
+          <p>{{ result.body }}</p>
+        </div>
+        <span>{{ result.sender }}</span>
+      </a>
+    {% else %}
+      <p class="empty">{% if q %}No accessible messages matched that search.{% else %}Try a keyword from the seeded data, such as perpendicular.{% endif %}</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Workspaces · Snickr{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Workspaces</h1>
+    <p>Signed in as <strong>{{ g.user.username }}</strong></p>
+  </div>
+  <form class="search-mini" action="{{ url_for('search') }}">
+    <input name="q" placeholder="Search accessible messages">
+    <button type="submit">Search</button>
+  </form>
+</section>
+
+<section class="grid two">
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Your workspaces</h2>
+      <span>{{ workspaces|length }}</span>
+    </div>
+    <div class="stack">
+      {% for workspace in workspaces %}
+        <a class="workspace-row" href="{{ url_for('workspace', workspace_id=workspace.workspace_id) }}">
+          <div>
+            <strong>{{ workspace.name }}</strong>
+            <p>{{ workspace.description or "No description" }}</p>
+          </div>
+          <dl>
+            <div><dt>Channels</dt><dd>{{ workspace.joined_channels }}</dd></div>
+            <div><dt>Messages</dt><dd>{{ workspace.visible_messages }}</dd></div>
+          </dl>
+          {% if workspace.is_admin %}<span class="tag">admin</span>{% endif %}
+        </a>
+      {% else %}
+        <p class="empty">No workspaces yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h2>Create workspace</h2></div>
+    <form class="stack-form" method="post" action="{{ url_for('create_workspace') }}">
+      <label>Name
+        <input name="name" placeholder="Design Lab" required>
+      </label>
+      <label>Description
+        <textarea name="description" rows="4" placeholder="What this workspace is for"></textarea>
+      </label>
+      <button class="primary" type="submit">Create</button>
+    </form>
+  </div>
+</section>
+
+<section class="grid two">
+  <div class="panel">
+    <div class="panel-head"><h2>Workspace invitations</h2></div>
+    <div class="stack">
+      {% for invite in workspace_invites %}
+        <div class="invite-row">
+          <div>
+            <strong>{{ invite.workspace_name }}</strong>
+            <p>from {{ invite.inviter }}</p>
+          </div>
+          <div class="actions">
+            <form method="post" action="{{ url_for('respond_workspace_invitation', invitation_id=invite.invitation_id, action='accept') }}"><button class="small primary" type="submit">Accept</button></form>
+            <form method="post" action="{{ url_for('respond_workspace_invitation', invitation_id=invite.invitation_id, action='decline') }}"><button class="small" type="submit">Decline</button></form>
+          </div>
+        </div>
+      {% else %}
+        <p class="empty">No pending workspace invitations.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h2>Channel invitations</h2></div>
+    <div class="stack">
+      {% for invite in channel_invites %}
+        <div class="invite-row">
+          <div>
+            <strong>#{{ invite.channel_name }}</strong>
+            <p>{{ invite.workspace_name }} · from {{ invite.inviter }}</p>
+          </div>
+          <div class="actions">
+            <form method="post" action="{{ url_for('respond_channel_invitation', invitation_id=invite.invitation_id, action='accept') }}"><button class="small primary" type="submit">Accept</button></form>
+            <form method="post" action="{{ url_for('respond_channel_invitation', invitation_id=invite.invitation_id, action='decline') }}"><button class="small" type="submit">Decline</button></form>
+          </div>
+        </div>
+      {% else %}
+        <p class="empty">No pending channel invitations.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+

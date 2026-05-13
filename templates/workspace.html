@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ workspace.name }} · Snickr{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <a class="crumb" href="{{ url_for('dashboard') }}">Workspaces</a>
+    <h1>{{ workspace.name }}</h1>
+    <p>{{ workspace.description or "No description" }}</p>
+  </div>
+  {% if membership.is_admin %}
+    <span class="role-chip">Workspace admin</span>
+  {% endif %}
+</section>
+
+<section class="grid main-aside">
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Channels</h2>
+      <span>{{ channels|length }}</span>
+    </div>
+    <div class="channel-list">
+      {% for channel in channels %}
+        <div class="channel-row">
+          <a href="{{ url_for('channel', channel_id=channel.channel_id) }}">
+            <strong>{% if channel.type == "direct" %}@{% else %}#{% endif %}{{ channel.name }}</strong>
+            <p>{{ channel.type }} · {{ channel.message_count }} messages</p>
+          </a>
+          {% if not channel.is_joined and channel.type == "public" %}
+            <form method="post" action="{{ url_for('join_channel', channel_id=channel.channel_id) }}">
+              <button class="small" type="submit">Join</button>
+            </form>
+          {% endif %}
+        </div>
+      {% else %}
+        <p class="empty">No channels yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <aside class="stack">
+    <div class="panel">
+      <div class="panel-head"><h2>Create channel</h2></div>
+      <form class="stack-form" method="post" action="{{ url_for('create_channel', workspace_id=workspace.workspace_id) }}">
+        <label>Name
+          <input name="name" placeholder="announcements" required>
+        </label>
+        <label>Type
+          <select name="type">
+            <option value="public">public</option>
+            <option value="private">private</option>
+            <option value="direct">direct</option>
+          </select>
+        </label>
+        <label>Direct user
+          <input name="direct_identifier" placeholder="username or email">
+        </label>
+        <button class="primary" type="submit">Create</button>
+      </form>
+    </div>
+
+    {% if membership.is_admin %}
+      <div class="panel">
+        <div class="panel-head"><h2>Invite to workspace</h2></div>
+        <form class="stack-form" method="post" action="{{ url_for('invite_workspace', workspace_id=workspace.workspace_id) }}">
+          <label>Username or email
+            <input name="identifier" placeholder="vikram" required>
+          </label>
+          <button type="submit">Send invite</button>
+        </form>
+      </div>
+    {% endif %}
+  </aside>
+</section>
+
+<section class="grid two">
+  <div class="panel">
+    <div class="panel-head"><h2>Members</h2></div>
+    <div class="member-list">
+      {% for member in members %}
+        <div>
+          <strong>{{ member.username }}</strong>
+          <span>{{ member.nickname or "no nickname" }}</span>
+          {% if member.is_admin %}<em>admin</em>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h2>Pending workspace invites</h2></div>
+    <div class="stack">
+      {% for invite in pending_workspace_invites %}
+        <div class="compact-row">
+          <strong>{{ invite.invitee }}</strong>
+          <span>invited by {{ invite.inviter }}</span>
+        </div>
+      {% else %}
+        <p class="empty">None pending.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+

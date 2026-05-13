@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Snickr{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('dashboard') if g.user else url_for('auth') }}">
+      <span class="brand-mark">S</span>
+      <span>Snickr</span>
+    </a>
+    {% if g.user %}
+      <nav class="nav">
+        <a href="{{ url_for('dashboard') }}">Workspaces</a>
+        <a href="{{ url_for('search') }}">Search</a>
+        <form action="{{ url_for('logout') }}" method="post">
+          <button class="icon-button" type="submit" title="Log out" aria-label="Log out">
+            <span aria-hidden="true">⎋</span>
+          </button>
+        </form>
+      </nav>
+    {% endif %}
+  </header>
+
+  <main class="shell">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
+

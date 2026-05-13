@@ -1,0 +1,4 @@
+flask==3.0.2
+psycopg2-binary==2.9.9
+Werkzeug==3.0.1
+

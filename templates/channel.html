@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ channel.name }} · Snickr{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <a class="crumb" href="{{ url_for('workspace', workspace_id=channel.workspace_id) }}">{{ channel.workspace_name }}</a>
+    <h1>{% if channel.type == "direct" %}@{% else %}#{% endif %}{{ channel.name }}</h1>
+    <p>{{ channel.type }} channel · {{ members|length }} members</p>
+  </div>
+  <form class="search-mini" action="{{ url_for('search') }}">
+    <input name="q" placeholder="Search messages">
+    <button type="submit">Search</button>
+  </form>
+</section>
+
+<section class="grid main-aside">
+  <div class="panel chat-panel">
+    <div class="message-list">
+      {% for message in messages %}
+        <article class="message {% if message.is_mine %}mine{% endif %}">
+          <div class="avatar">{{ message.username[:1]|upper }}</div>
+          <div>
+            <header>
+              <strong>{{ message.username }}</strong>
+              <time>{{ message.posted_at.strftime("%b %-d, %-I:%M %p") }}</time>
+            </header>
+            <p>{{ message.body }}</p>
+          </div>
+        </article>
+      {% else %}
+        <p class="empty">No messages yet.</p>
+      {% endfor %}
+    </div>
+    <form class="composer" method="post" action="{{ url_for('post_message', channel_id=channel.channel_id) }}">
+      <textarea name="body" rows="3" placeholder="Write a message" required></textarea>
+      <button class="primary" type="submit">Post</button>
+    </form>
+  </div>
+
+  <aside class="stack">
+    <div class="panel">
+      <div class="panel-head"><h2>Members</h2></div>
+      <div class="member-list">
+        {% for member in members %}
+          <div><strong>{{ member.username }}</strong><span>{{ member.nickname or "" }}</span></div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if channel.type != "direct" %}
+      <div class="panel">
+        <div class="panel-head"><h2>Invite to channel</h2></div>
+        <form class="stack-form" method="post" action="{{ url_for('invite_channel', channel_id=channel.channel_id) }}">
+          <label>Username or email
+            <input name="identifier" placeholder="kavya" required>
+          </label>
+          <button type="submit">Send invite</button>
+        </form>
+      </div>
+    {% endif %}
+
+    <div class="panel">
+      <div class="panel-head"><h2>Pending channel invites</h2></div>
+      <div class="stack">
+        {% for invite in pending_invites %}
+          <div class="compact-row"><strong>{{ invite.invitee }}</strong><span>from {{ invite.inviter }}</span></div>
+        {% else %}
+          <p class="empty">None pending.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+</section>
+{% endblock %}
+
