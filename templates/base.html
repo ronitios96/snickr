@@ -10,7 +10,9 @@
   <header class="topbar">
     <a class="brand" href="{{ url_for('dashboard') if g.user else url_for('auth') }}">
       <span class="brand-mark">S</span>
-      <span>Snickr</span>
+      <span class="brand-copy">
+        <span class="brand-name">Snickr</span>
+      </span>
     </a>
     {% if g.user %}
       <nav class="nav">
@@ -39,4 +41,3 @@
   </main>
 </body>
 </html>
-

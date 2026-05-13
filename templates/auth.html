@@ -3,17 +3,17 @@
 {% block content %}
 <section class="auth-layout">
   <div class="auth-copy">
-    <h1>Team conversations, tucked into workspaces.</h1>
-    <p>Use the seeded accounts or register a new user, then create channels, invite members, post messages, and search accessible content.</p>
+    <h1>Workspace messaging with scoped access.</h1>
+    <p>Sign in with a seeded account or register a new user to create workspaces, manage channels, invite members, and search messages you are allowed to view.</p>
     <div class="demo-list">
-      <span>Demo password</span>
+      <span>Seed password</span>
       <strong>password123</strong>
     </div>
   </div>
   <div class="auth-panel">
     <div class="tabs" role="tablist">
-      <button class="tab active" type="button" onclick="document.body.classList.remove('show-register')">Log in</button>
-      <button class="tab" type="button" onclick="document.body.classList.add('show-register')">Register</button>
+      <button class="tab tab-login" type="button" onclick="document.body.classList.remove('show-register')">Log in</button>
+      <button class="tab tab-register" type="button" onclick="document.body.classList.add('show-register')">Register</button>
     </div>
 
     <form class="auth-form login-form" method="post">

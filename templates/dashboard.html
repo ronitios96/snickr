@@ -4,7 +4,7 @@
 <section class="page-head">
   <div>
     <h1>Workspaces</h1>
-    <p>Signed in as <strong>{{ g.user.username }}</strong></p>
+    <p>Signed in as <strong>@{{ g.user.username }}</strong>. Create workspaces, review invitations, and search accessible messages.</p>
   </div>
   <form class="search-mini" action="{{ url_for('search') }}">
     <input name="q" placeholder="Search accessible messages">
@@ -23,7 +23,7 @@
         <a class="workspace-row" href="{{ url_for('workspace', workspace_id=workspace.workspace_id) }}">
           <div>
             <strong>{{ workspace.name }}</strong>
-            <p>{{ workspace.description or "No description" }}</p>
+            <p>{{ workspace.description or "No description yet" }}</p>
           </div>
           <dl>
             <div><dt>Channels</dt><dd>{{ workspace.joined_channels }}</dd></div>
@@ -44,9 +44,9 @@
         <input name="name" placeholder="Design Lab" required>
       </label>
       <label>Description
-        <textarea name="description" rows="4" placeholder="What this workspace is for"></textarea>
+        <textarea name="description" rows="4" placeholder="What this space is for"></textarea>
       </label>
-      <button class="primary" type="submit">Create</button>
+      <button class="primary" type="submit">Create workspace</button>
     </form>
   </div>
 </section>
@@ -93,4 +93,3 @@
   </div>
 </section>
 {% endblock %}
-

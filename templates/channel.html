@@ -33,7 +33,7 @@
     </div>
     <form class="composer" method="post" action="{{ url_for('post_message', channel_id=channel.channel_id) }}">
       <textarea name="body" rows="3" placeholder="Write a message" required></textarea>
-      <button class="primary" type="submit">Post</button>
+      <button class="primary" type="submit">Post message</button>
     </form>
   </div>
 
@@ -72,4 +72,3 @@
   </aside>
 </section>
 {% endblock %}
-

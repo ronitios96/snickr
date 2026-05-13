@@ -5,7 +5,7 @@
   <div>
     <a class="crumb" href="{{ url_for('dashboard') }}">Workspaces</a>
     <h1>{{ workspace.name }}</h1>
-    <p>{{ workspace.description or "No description" }}</p>
+    <p>{{ workspace.description or "No description yet" }}</p>
   </div>
   {% if membership.is_admin %}
     <span class="role-chip">Workspace admin</span>
@@ -54,7 +54,7 @@
         <label>Direct user
           <input name="direct_identifier" placeholder="username or email">
         </label>
-        <button class="primary" type="submit">Create</button>
+        <button class="primary" type="submit">Create channel</button>
       </form>
     </div>
 
@@ -101,4 +101,3 @@
   </div>
 </section>
 {% endblock %}
-
