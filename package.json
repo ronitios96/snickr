@@ -1,0 +1,13 @@
+{
+  "name": "snickr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local Playwright checks for the Snickr CS6083 final project demo.",
+  "scripts": {
+    "demo:playwright": "node report/demo/playwright_demo.js",
+    "test:e2e": "node tests/playwright/regression.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
+  }
+}

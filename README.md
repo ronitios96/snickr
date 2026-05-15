@@ -22,6 +22,23 @@ The app also accepts `DATABASE_URL`, for example:
 DATABASE_URL=postgresql:///snickr_dev python app.py
 ```
 
+## Automated Demo Checks
+
+With the Flask app running on `http://127.0.0.1:5001`, run the repeatable browser regression suite:
+
+```bash
+npm install
+npm run test:e2e
+```
+
+The suite resets and reseeds `snickr_dev` before every case, then resets it again at the end. It writes its latest summary to `report/demo/regression_result.json`.
+
+To regenerate the screenshot walkthrough used by the defense guide:
+
+```bash
+npm run demo:playwright
+```
+
 ## Demo Accounts
 
 All seed users use password `password123`.
@@ -46,4 +63,3 @@ All seed users use password `password123`.
 - Uses parameterized SQL queries and Jinja autoescaping.
 - Uses transactions for multi-step writes such as workspace creation, channel creation, invitation acceptance, and message posting.
 - Uses database triggers to protect core invariants if a future code path bypasses the application checks.
-
